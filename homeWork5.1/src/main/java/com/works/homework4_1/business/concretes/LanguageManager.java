@@ -62,18 +62,16 @@ public class LanguageManager implements LanguageService {
     public void updateLanguage(UpdateLanguageRequest updateLanguageRequest) {
         List<ProgramLanguage> languages = languageRepository.findAll();
         ProgramLanguage language = new ProgramLanguage();
-        try {
-            for (ProgramLanguage language1 : languages) {
-                if (language1.getName().equals(updateLanguageRequest.getName())) {
-                    language.setName(updateLanguageRequest.getName());
-                    language.setTechnologies(updateLanguageRequest.getTechnologies());
-                    languageRepository.saveAndFlush(language);
-                    System.out.println("Language updated succesfully");
-                }
+        for (ProgramLanguage language1 : languages) {
+            if (language1.getId() == updateLanguageRequest.getId()) {
+                language.setId(updateLanguageRequest.getId());
+                language.setName(updateLanguageRequest.getName());
+                language.setTechnologies(updateLanguageRequest.getTechnologies());
+                languageRepository.saveAndFlush(language);
+                System.out.println("Language updated succesfully");
             }
-        } catch (ProgramLanguageNotFoundException e) {
-            e.getMessage();
         }
+        throw new ProgramLanguageNotFoundException();
     }
 
     @Override
